@@ -1,24 +1,25 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
+import Sidebar from './sidebar';
+import Dashboard from './dashboard';
 
 function App() {
+  const [isNavOpen, setIsNavOpen] = useState(false);
+  const toggleNav = () => setIsNavOpen(!isNavOpen);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="container">
+        <Sidebar onToggle={toggleNav} isOpen={isNavOpen} />
+        <div className="main-content">
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            {/* Add more routes as needed */}
+          </Routes>
+        </div>
+      </div>
+    </Router>
   );
 }
 
