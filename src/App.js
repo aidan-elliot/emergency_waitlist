@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
-import Sidebar from './sidebar';
+import Sidebar from './Sidebar';
 import Dashboard from './dashboard';
 
 function App() {
