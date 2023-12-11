@@ -11,8 +11,10 @@ const app = express();
 // Use the body-parser middleware to parse JSON bodies
 app.use(bodyParser.json());
 
-// Read the active item from the database
-let activeItem = JSON.parse(fs.readFileSync('db.json')).activeItem;
+// Read the active item and sidebar state from the database
+let db = JSON.parse(fs.readFileSync('db.json'));
+let activeItem = db.activeItem;
+let sidebarState = db.sidebarState;
 
 // Handle GET requests to the /active-item endpoint
 app.get('/active-item', (req, res) => {
@@ -26,7 +28,25 @@ app.post('/active-item', (req, res) => {
   activeItem = req.body.activeItem;
 
   // Write the active item to the database
-  fs.writeFileSync('db.json', JSON.stringify({ activeItem }));
+  fs.writeFileSync('db.json', JSON.stringify({ activeItem, sidebarState }));
+
+  // Send a success response
+  res.json({ success: true });
+});
+
+// Handle GET requests to the /sidebar-state endpoint
+app.get('/sidebar-state', (req, res) => {
+  // Send the sidebar state as the response
+  res.json({ sidebarState });
+});
+
+// Handle POST requests to the /sidebar-state endpoint
+app.post('/sidebar-state', (req, res) => {
+  // Update the sidebar state with the one from the request body
+  sidebarState = req.body.sidebarState;
+
+  // Write the sidebar state to the database
+  fs.writeFileSync('db.json', JSON.stringify({ activeItem, sidebarState }));
 
   // Send a success response
   res.json({ success: true });

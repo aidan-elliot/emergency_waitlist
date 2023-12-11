@@ -47,8 +47,9 @@
   text-align: left;
   border-right: 1px solid #ececec;
   transition-property: width; /* Animate the width property */
-  transition-duration: 0.5s; /* The animation should take 0.5 seconds */
+  transition-duration: 0.25s; /* The animation should take 0.5 seconds */
   transition-timing-function: ease;
+  position: relative;
 }
 
 .sidebar-row {
@@ -67,6 +68,7 @@
   padding: 8px; /* Reduce padding to make the hover background thinner */
   transition: background-color 0.1s ease-in-out; /* Add transition for the background color */
   border-radius: 10px; /* Rounded corners */
+  position: relative;
 }
 .sidebar a {
   text-decoration: none;
@@ -100,6 +102,12 @@
 }
 .sidebar.closed .sidebar-toggle {
   margin: 0; /* Remove the margin when the sidebar is collapsed */
+  margin-bottom: 12px;
+}
+.sidebar.closed .sidebar-item {
+  /* ...other styles... */
+  padding: 10px; /* Adjust as needed */
+  /* ...other styles... */
 }
 .sidebar-item {
   display: flex;
@@ -119,10 +127,13 @@
   position: relative;
 }
 .search-icon {
-  position: absolute; /* Position the icon absolutely */
-  left: 10px; /* Position the icon on the left */
-  top: 50%; /* Center the icon vertically */
-  transform: translateY(-50%); /* Adjust the icon's position to be perfectly centered */
+  position: absolute;
+  left: 10px; /* Adjust as needed */
+  top: 50%;
+  transform: translateY(-50%);
+}
+#searchicon {
+  height: 16px; /* Adjust as needed */
 }
 
 .sidebar .search-bar input {
@@ -147,6 +158,8 @@
   outline: none; /* Remove the default outline */
   box-shadow: 0 0 0 1px rgb(172, 172, 185); /* Add a black border */
 }
+
+
 
 
 .shifted {
