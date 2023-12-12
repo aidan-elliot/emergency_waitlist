@@ -1,58 +1,58 @@
-// server.js
-
-// Import the necessary modules
 const express = require('express');
+const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const fs = require('fs');
 
-// Create an Express application
+// Connect to MongoDB
+mongoose.connect('mongodb://localhost:27017/patientDB', { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.error('Could not connect to MongoDB...', err));
+
+// Create a Mongoose Schema for Patients
+const patientSchema = new mongoose.Schema({
+  name: String,
+  address: String,
+  injuryType: String,
+  painScale: Number,
+  waitTime: String,
+  loginCode: String // New field for the three-digit code
+});
+
+// Create a Mongoose Model
+const Patient = mongoose.model('Patient', patientSchema);
+
 const app = express();
-
-// Use the body-parser middleware to parse JSON bodies
 app.use(bodyParser.json());
 
-// Read the active item and sidebar state from the database
-let db = JSON.parse(fs.readFileSync('db.json'));
-let activeItem = db.activeItem;
-let sidebarState = db.sidebarState;
+// Function to calculate wait time (placeholder)
+const calculateWaitTime = async () => {
+  // Implement your logic here
+  return 'Estimated wait time';
+};
 
-// Handle GET requests to the /active-item endpoint
-app.get('/active-item', (req, res) => {
-  // Send the active item as the response
-  res.json({ activeItem });
+// Function to generate a three-digit code (placeholder)
+const generateLoginCode = () => {
+  return Math.floor(100 + Math.random() * 900).toString(); // Generates a random three-digit number
+};
+
+// API Endpoints
+// Endpoint to add a new patient
+app.post('/api/patients', async (req, res) => {
+  const waitTime = await calculateWaitTime();
+  const loginCode = generateLoginCode(); // Generate a login code for the patient
+  const patient = new Patient({ 
+    name: req.body.name, 
+    address: req.body.address, 
+    injuryType: req.body.injuryType, 
+    painScale: req.body.painScale,
+    waitTime: waitTime,
+    loginCode: loginCode // Assign the generated code
+  });
+  await patient.save();
+  res.send(patient);
 });
 
-// Handle POST requests to the /active-item endpoint
-app.post('/active-item', (req, res) => {
-  // Update the active item with the one from the request body
-  activeItem = req.body.activeItem;
 
-  // Write the active item to the database
-  fs.writeFileSync('db.json', JSON.stringify({ activeItem, sidebarState }));
-
-  // Send a success response
-  res.json({ success: true });
-});
-
-// Handle GET requests to the /sidebar-state endpoint
-app.get('/sidebar-state', (req, res) => {
-  // Send the sidebar state as the response
-  res.json({ sidebarState });
-});
-
-// Handle POST requests to the /sidebar-state endpoint
-app.post('/sidebar-state', (req, res) => {
-  // Update the sidebar state with the one from the request body
-  sidebarState = req.body.sidebarState;
-
-  // Write the sidebar state to the database
-  fs.writeFileSync('db.json', JSON.stringify({ activeItem, sidebarState }));
-
-  // Send a success response
-  res.json({ success: true });
-});
-
-// Start the server on port 3001
+// Start the server
 app.listen(3001, () => {
   console.log('Server is running on port 3001');
 });

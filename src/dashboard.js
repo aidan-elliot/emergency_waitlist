@@ -1,28 +1,17 @@
 import React from 'react';
-import TopBar from './topbar';
-import './App.css'; // Import your CSS
+import TopBar from './TopBar';
+import Sidebar from './sidebar';
+import PatientInfoDashboard from './PatientInfoDashboard'; // Import the new component
 
 function Dashboard() {
   return (
-    <div>
-    <TopBar />
-    <div className="dashboard">
-      <div className="dashboard-item">
-        {/* Add your content here */}
+    <div className="dashboard-layout">
+      <Sidebar />
+      <div className="dashboard-main-content">
+        <TopBar /> {/* TopBar component */}
+        <PatientInfoDashboard /> {/* Patient info dashboard component */}
       </div>
-      <div className="dashboard-item">
-        {/* Add your content here */}
-      </div>
-      <div className="dashboard-item">
-        {/* Add your content here */}
-      </div>
-      <div className="dashboard-item">
-        {/* Add your content here */}
-      </div>
-      {/* Add more boxes as needed */}
     </div>
-  </div>
-
   );
 }
 
