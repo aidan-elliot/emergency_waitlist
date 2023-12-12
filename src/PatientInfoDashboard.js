@@ -1,34 +1,51 @@
 import React, { useState, useEffect } from 'react';
+import './PatientInfoDashboard.css'; // New CSS file for this component
 
 function PatientInfoDashboard() {
-  // Sample patient data
-  const [patients, setPatients] = useState([
-    { id: 1, name: 'John Doe', issue: 'Headache', waitTime: '15 mins' },
-    { id: 2, name: 'Jane Smith', issue: 'Sprained Ankle', waitTime: '30 mins' },
-    // Add more sample patients here
-  ]);
+  const [patients, setPatients] = useState([]);
 
-  const removePatient = (patientId) => {
-    setPatients(patients.filter(patient => patient.id !== patientId));
+  useEffect(() => {
+    const fetchPatients = async () => {
+      try {
+        const response = await fetch('/api/patients');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setPatients(data);
+      } catch (error) {
+        console.error('Error fetching patient data:', error);
+      }
+    };
+
+    fetchPatients();
+  }, []);
+
+  const removePatient = async (patientId) => {
+    try {
+      const response = await fetch(`/api/patients/${patientId}`, { method: 'DELETE' });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      setPatients(patients.filter(patient => patient._id !== patientId));
+    } catch (error) {
+      console.error('Error removing patient:', error);
+    }
   };
-
-  // Calculate estimated total wait time
-  const totalWaitTime = '45 mins'; // Placeholder, calculate based on your logic
 
   return (
     <div className="patient-info-dashboard">
       <h2>Patient Information Dashboard</h2>
       <div className="patient-list">
         {patients.map(patient => (
-          <div key={patient.id} className="patient">
+          <div key={patient._id} className="patient">
             <p><strong>Name:</strong> {patient.name}</p>
             <p><strong>Issue:</strong> {patient.issue}</p>
             <p><strong>Estimated Wait:</strong> {patient.waitTime}</p>
-            <button onClick={() => removePatient(patient.id)}>Mark as Attended</button>
+            <button onClick={() => removePatient(patient._id)}>Mark as Attended</button>
           </div>
         ))}
       </div>
-      <p><strong>Estimated Total Wait Time for End of List:</strong> {totalWaitTime}</p>
     </div>
   );
 }

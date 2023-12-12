@@ -190,6 +190,10 @@
   align-content: flex-start; /* Align the boxes to the start vertically */
   gap: 20px; /* Add 20 pixels of space between the boxes */
 }
+.dashboard-layout {
+  display: flex;
+  height: 100vh; /* Set the height to the full viewport height */
+}
 
 .dashboard-item {
   width: 200px; /* Adjust as needed */
@@ -198,7 +202,11 @@
   border-radius: 4px; /* Adjust as needed */
 }
 
-
+.dashboard-main-content {
+  flex-grow: 1; /* Fill the remaining space */
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+}
 
 
 

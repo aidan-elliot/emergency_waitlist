@@ -51,6 +51,12 @@ app.post('/api/patients', async (req, res) => {
   res.send(patient);
 });
 
+app.get('/api/patients', async (req, res) => {
+  const patients = await Patient.find();
+  res.send(patients);
+});
+
+
 
 // Start the server
 app.listen(3001, () => {
