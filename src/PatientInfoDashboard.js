@@ -40,8 +40,9 @@ function PatientInfoDashboard() {
         {patients.map(patient => (
           <div key={patient._id} className="patient">
             <p><strong>Name:</strong> {patient.name}</p>
-            <p><strong>Issue:</strong> {patient.issue}</p>
-            <p><strong>Estimated Wait:</strong> {patient.waitTime}</p>
+            <p><strong>Address:</strong> {patient.address}</p>
+            <p><strong>Injury:</strong> {patient.injury}</p>
+            <p><strong>Pain Scale:</strong> {patient.painScale}</p>
             <button onClick={() => removePatient(patient._id)}>Mark as Attended</button>
           </div>
         ))}
