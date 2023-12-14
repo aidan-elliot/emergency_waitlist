@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-route
 import LoginScreen from './Components/LoginScreen';
 import AdminLogin from './Components/AdminLogin';
 import Dashboard from './Components/dashboard';
-import PatientPortal from './Components/PatientPortal';
 import PatientRegistration from './Components/PatientRegistration'; // Adjust the path as necessary
 import './Components/App.css';
 
@@ -35,8 +34,6 @@ function App() {
           {/* Route for the admin dashboard */}
           {isAdminLoggedIn && <Route path="/dashboard" element={<Dashboard />} />}
 
-          {/* Route for the patient portal */}
-          <Route path="/patient-portal" element={<PatientPortal />} />
         </Routes>
       </div>
     </Router>
