@@ -26,3 +26,5 @@ npm install --save-dev concurrently
 
 npm install react-router-dom@6
 
+npm install cors
+
