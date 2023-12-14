@@ -28,3 +28,4 @@ npm install react-router-dom@6
 
 npm install cors
 
+npm install express mongoose body-parser cors
