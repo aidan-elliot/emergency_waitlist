@@ -1,43 +1,23 @@
+// server.js
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
 const cors = require('cors');
+const patientRoutes = require('./src/api/patients');
 
 const app = express();
 
+// Connect to MongoDB
+mongoose.connect('mongodb://localhost:27017/hospitalDB', { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('MongoDB Connected...'))
+  .catch(err => console.log(err));
+
 // Middleware
 app.use(cors());
-app.use(bodyParser.json());
-
-// Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/hospitalDB', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
-
-// Patient Schema and Model
-const patientSchema = new mongoose.Schema({
-  name: String,
-  address: String,
-  injuryType: String,
-  painScale: Number
-});
-
-const Patient = mongoose.model('Patient', patientSchema);
+app.use(express.json());
 
 // Routes
-app.post('/api/patients', async (req, res) => {
-  try {
-    const newPatient = new Patient(req.body);
-    const savedPatient = await newPatient.save();
-    res.status(201).json(savedPatient);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
+app.use('/api/patients', patientRoutes);
 
-// Start the server
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+const port = process.env.PORT || 3001;
+
+app.listen(port, () => console.log(`Server started on port ${port}`));

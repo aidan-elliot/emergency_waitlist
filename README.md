@@ -29,3 +29,13 @@ npm install react-router-dom@6
 npm install cors
 
 npm install express mongoose body-parser cors
+
+npm install react-scripts
+
+npm install react react-dom
+
+npm install axios
+
+
+For mongoDB, ensure this library exists.
+mkdir C:\data\db\

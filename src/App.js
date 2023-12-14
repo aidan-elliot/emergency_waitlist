@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
-import LoginScreen from './LoginScreen';
-import AdminLogin from './AdminLogin';
-import Dashboard from './dashboard';
-import PatientPortal from './PatientPortal';
-import PatientRegistration from './PatientRegistration';
-import './App.css';
+import LoginScreen from './Components/LoginScreen';
+import AdminLogin from './Components/AdminLogin';
+import Dashboard from './Components/dashboard';
+import PatientPortal from './Components/PatientPortal';
+import PatientRegistration from './Components/PatientRegistration'; // Adjust the path as necessary
+import './Components/App.css';
 
 function App() {
   const [userRole, setUserRole] = useState('');
