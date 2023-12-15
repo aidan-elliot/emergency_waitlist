@@ -18,7 +18,7 @@ Web ER is a modern web application designed to streamline the patient management
 - **Backend**: Node.js with Express.js
 - **Database**: MongoDB
 - **Styling**: CSS
-- **Deployment**: (If applicable, mention the deployment platform like AWS, Heroku, etc.)
+- **Deployment**: (Prototype cloud deployement on Azure M0 Sandbox)
 
 ## Getting Started
 
