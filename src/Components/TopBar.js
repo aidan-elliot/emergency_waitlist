@@ -9,7 +9,6 @@ function TopBar() {
   return (
     // Rendering a div with the class "top-bar"
     <div className="top-bar">
-      // Rendering an h1 element with the text "Dashboard"
       <h1>Dashboard</h1>
     </div>
   );
