@@ -30,49 +30,54 @@ Web ER is a modern web application designed to streamline the patient management
 ### Installation
 
 1. Clone the repository:
-   ```
-   git clone https://github.com/aidan-elliot/emergency_waitlist.git
-   ```
+    ```
+    git clone https://github.com/aidan-elliot/emergency_waitlist.git
+    ```
+
 2. Install NPM packages:
-   ```
-npm install
-npm install @fontsource/inter
-npm install express
-npm install concurrently --save-dev
-npm install cors
-npm install lodash
-npm install react-router-dom
-npm install react-draggable
-npm install react-grid-layout
-npm install react-scripts
-npm install axios
-npm install nodemon --save-dev
-   ```
+    ```shell
+    npm install
+    npm install @fontsource/inter
+    npm install express
+    npm install concurrently --save-dev
+    npm install cors
+    npm install lodash
+    npm install react-router-dom
+    npm install react-draggable
+    npm install react-grid-layout
+    npm install react-scripts
+    npm install axios
+    npm install nodemon --save-dev
+    ```
+
 3. Set up the environment variables in a `.env` file:
-   ```env
-   MONGODB_URI=your_mongodb_uri
-   PORT=8000
-   ```
+    ```env
+    MONGODB_URI=your_mongodb_uri
+    PORT=8000
+    ```
+
 4. Run the application:
-   ```
-   mongod
-   node server
-   npm start
-   ```
+    ```shell
+    mongod
+    node server
+    npm start
+    ```
 
 ## Usage
 
-- **Admin Login**: Navigate to the Admin Login page, and user the following credentials
-   ```
+- **Admin Login**: Navigate to the Admin Login page, and use the following credentials:
+    ```
     user: admin
     pass: 123456
-      ```
+    ```
+
 - **Patient Registration**: Navigate to the registration page and enter the patient's details.
+
 - **Patient Queue**: View the prioritized list of patients on the admin dashboard.
+
 - **Patient Code Login**: Patients can log in using their unique code to check their status.
 
-
-For mongoDB, ensure this library exists. You can confirm it exists by running in your terminal:
-   ```
-mkdir C:\data\db\
-      ```
+For MongoDB, ensure this library exists. You can confirm it exists by running the following command in your terminal:
+    ```shell
+    mkdir C:\data\db\
+    ```
