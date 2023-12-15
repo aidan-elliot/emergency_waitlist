@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -5,6 +6,20 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+// Use environment variable for MongoDB URI
+const uri = process.env.MONGODB_URI;
+
+async function connect() {
+  try {
+    await mongoose.connect(uri);
+    console.log('Connected to MongoDB Atlas');
+  } catch (error) {
+    console.error('Error connecting to MongoDB Atlas:', error);
+  }
+}
+
+connect(); // Connect to MongoDB Atlas
 
 const PatientSchema = new mongoose.Schema({
   name: String,
@@ -17,10 +32,16 @@ const PatientSchema = new mongoose.Schema({
 
 const Patient = mongoose.model('Patient', PatientSchema);
 
-// Add code for handling uncaught exceptions
-process.on('uncaughtException', function (err) {
-  console.log(err);
+// Handle uncaught exceptions and unhandled promise rejections
+process.on('uncaughtException', err => {
+  console.error('Uncaught Exception:', err);
 });
+
+process.on('unhandledRejection', err => {
+  console.error('Unhandled Rejection:', err);
+});
+
+// API endpoints
 
 // POST: Register a new patient
 app.post('/api/patients', async (req, res) => {
@@ -58,7 +79,7 @@ app.get('/api/patients/:id', async (req, res) => {
 app.put('/api/patients/:id', async (req, res) => {
   try {
     const patient = await Patient.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!patient) return res.status(404).json({ message: 'Patient not found' });
+    if (!patient) return res.status(404).json({ message: 'Patient not found' });yleeakrx5
     res.json(patient);
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -76,19 +97,23 @@ app.delete('/api/patients/:id', async (req, res) => {
   }
 });
 
-mongoose.connect('mongodb://localhost:27017/hospitalDB', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
+// GET: Retrieve a patient by code
+app.get('/api/patients/code/:code', async (req, res) => {
+  try {
+    const patients = await Patient.find().sort({ priorityScore: -1 });
+    const patientIndex = patients.findIndex(p => p.code === req.params.code);
+    if (patientIndex === -1) return res.status(404).json({ message: 'Patient not found' });
+
+    const patient = patients[patientIndex];
+    const waitTime = patientIndex * 15; // 15 minutes per patient ahead in line
+    res.json({ patient, waitTime });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
-// mongoose.connect returns a promise
-mongoose.connection.on('open', () => {
-  console.log('Connected to MongoDB');
-});
 
-mongoose.connection.on('error', (err) => {
-  console.error('Error connecting to MongoDB', err);
-});
 
-const port = process.env.PORT || 3001;
+// Start the server
+const port = process.env.PORT || 8000;
 app.listen(port, () => console.log(`Server running on port ${port}`));

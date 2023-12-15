@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './PatientInfoDashboard.css'; // New CSS file for this component
 
-function PatientInfoDashboard() {
+function PatientInfoDashboard({ searchTerm }) {
   const [patients, setPatients] = useState([]);
 
   useEffect(() => {
@@ -17,6 +17,7 @@ function PatientInfoDashboard() {
         console.error('Error fetching patient data:', error);
       }
     };
+    
 
     fetchPatients();
   }, []);
@@ -32,6 +33,7 @@ function PatientInfoDashboard() {
       console.error('Error removing patient:', error);
     }
   };
+  
 
   return (
     <div className="patient-info-dashboard">
@@ -40,7 +42,7 @@ function PatientInfoDashboard() {
         {patients.map(patient => (
           <div key={patient._id} className="patient">
             <p><strong>Name:</strong> {patient.name}</p>
-            <p><strong>Address:</strong> {patient.address}</p>
+            <p><strong>Age:</strong> {patient.age}</p>
             <p><strong>Injury:</strong> {patient.injury}</p>
             <p><strong>Pain Scale:</strong> {patient.painScale}</p>
             <button onClick={() => removePatient(patient._id)}>Mark as Attended</button>

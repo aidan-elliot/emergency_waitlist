@@ -5,6 +5,7 @@ import AdminLogin from './Components/AdminLogin';
 import Dashboard from './Components/dashboard';
 import PatientRegistration from './Components/PatientRegistration'; // Adjust the path as necessary
 import './Components/App.css';
+import PatientLogin from './Components/PatientLogin';
 
 function App() {
   const [userRole, setUserRole] = useState('');
@@ -24,6 +25,9 @@ function App() {
         <Routes>
           {/* Route for the root path */}
           <Route path="/" element={<LoginScreen onLogin={handleLogin} />} />
+
+          {/* Route for patient login */}
+          <Route path="/patient-login" element={<PatientLogin />} />
 
           {/* Route for admin login */}
           <Route path="/admin-login" element={<AdminLogin onAdminLogin={handleAdminLogin} />} />

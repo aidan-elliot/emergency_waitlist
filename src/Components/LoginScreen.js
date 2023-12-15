@@ -16,9 +16,9 @@ function LoginScreen({ onLogin }) {
 
     return (
         <div className="login-screen">
-            <button onClick={() => handleLogin('patient')}>Login as Patient</button>
             <button onClick={() => handleLogin('admin')}>Login as Admin</button>
             <button onClick={() => navigate('/register-patient')}>Register as Patient</button>
+            <button onClick={() => navigate('/patient-login')}>Patient Code Login</button> {/* New button */}
         </div>
     );
 }

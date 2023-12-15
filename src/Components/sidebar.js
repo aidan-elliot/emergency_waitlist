@@ -6,11 +6,14 @@ import logo from './HospitalApplogo-removebg-preview.png';
 import './App.css';
 
 
-function Sidebar() {
+function Sidebar({ onSearchChange }) {
 
   const [isOpen, setIsOpen] = useState(true);
   const [activeItem, setActiveItem] = useState(localStorage.getItem('activeItem') || 0);
   const searchInputRef = useRef(null);
+  const handleSearchInputChange = (event) => {
+    onSearchChange(event.target.value); // Update the search term in the parent component
+  };
 
   const handleToggle = async () => {
     const newState = !isOpen;
@@ -67,7 +70,12 @@ function Sidebar() {
       {isOpen && (
         <div className="search-bar">
           <FontAwesomeIcon icon={faSearch} className="search-icon" onClick={handleSearchIconClick} />
-          <input ref={searchInputRef} type="text" placeholder="Search" /> {/* Attach the ref to the input */}
+          <input
+            ref={searchInputRef}
+            type="text"
+            placeholder="Search"
+            onChange={handleSearchInputChange} // Handle the change event
+          />
         </div>
       )}
       <ul>
@@ -76,10 +84,10 @@ function Sidebar() {
             <FontAwesomeIcon icon={faSearch} className="search-icon" onClick={handleSearchIconClick} />
           </li>
         )}
-        {['/', '/about', '/contact'].map((route, index) => (
+        {['/dashboard', '/about', '/inbox'].map((route, index) => (
           <li key={route} className={`sidebar-item ${isOpen ? '' : 'collapsed'} ${activeItem == index ? 'active' : ''}`} onClick={() => handleItemClick(index)}>
             <FontAwesomeIcon icon={index === 0 ? faHouse : index === 1 ? faUserNurse : faEnvelope} />
-            <Link to={route} className="sidebar-link">{index === 0 ? 'Home' : index === 1 ? 'About' : 'Contact'}</Link>
+            <Link to={route} className="sidebar-link">{index === 0 ? 'Home' : index === 1 ? 'About' : 'Inbox'}</Link>
           </li>
         ))}
       </ul>
