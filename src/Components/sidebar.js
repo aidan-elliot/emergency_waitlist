@@ -5,16 +5,17 @@ import { faHouse, faUserNurse, faEnvelope, faBars, faSearch } from '@fortawesome
 import logo from './HospitalApplogo-removebg-preview.png';
 import './App.css';
 
-
 function Sidebar({ onSearchChange }) {
+  const [isOpen, setIsOpen] = useState(true); // State for sidebar open/close
+  const [activeItem, setActiveItem] = useState(localStorage.getItem('activeItem') || 0); // State for active sidebar item
+  const searchInputRef = useRef(null); // Reference to search input element
 
-  const [isOpen, setIsOpen] = useState(true);
-  const [activeItem, setActiveItem] = useState(localStorage.getItem('activeItem') || 0);
-  const searchInputRef = useRef(null);
+  // Handler for search input change
   const handleSearchInputChange = (event) => {
-    onSearchChange(event.target.value); // Update the search term in the parent component
+    onSearchChange(event.target.value);
   };
 
+  // Handler for sidebar toggle
   const handleToggle = async () => {
     const newState = !isOpen;
     setIsOpen(newState);
@@ -27,35 +28,39 @@ function Sidebar({ onSearchChange }) {
     });
   };
 
+  // Fetch sidebar state from server on component mount
   useEffect(() => {
     const fetchSidebarState = async () => {
       const response = await fetch('/sidebar-state');
-      const text = await response.text(); // Get the response as text
-      console.log(text); // Log the response to the console
+      const text = await response.text();
+      console.log(text);
       try {
-        const data = JSON.parse(text); // Try to parse the response as JSON
+        const data = JSON.parse(text);
         setIsOpen(data.sidebarState === 'open');
       } catch (error) {
-        console.error('Failed to parse JSON:', error); // Log any JSON parsing errors to the console
+        console.error('Failed to parse JSON:', error);
       }
     };
     fetchSidebarState();
   }, []);
 
+  // Handler for sidebar item click
   const handleItemClick = (index) => {
     setActiveItem(index);
   };
 
+  // Update active item in local storage on activeItem change
   useEffect(() => {
     localStorage.setItem('activeItem', activeItem);
   }, [activeItem]);
 
+  // Handler for search icon click
   const handleSearchIconClick = () => {
     handleToggle();
     if (!isOpen) {
       setTimeout(() => {
-        if (searchInputRef.current) { // Check if the ref is defined
-          searchInputRef.current.focus(); // Focus on the search input
+        if (searchInputRef.current) {
+          searchInputRef.current.focus();
         }
       }, 300);
     }
@@ -74,7 +79,7 @@ function Sidebar({ onSearchChange }) {
             ref={searchInputRef}
             type="text"
             placeholder="Search"
-            onChange={handleSearchInputChange} // Handle the change event
+            onChange={handleSearchInputChange}
           />
         </div>
       )}

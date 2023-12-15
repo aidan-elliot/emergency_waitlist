@@ -1,18 +1,26 @@
+// Importing necessary dependencies
 import React, { useState } from 'react';
 import axios from 'axios';
+import './PatientLogin.css';
+import logo from './HospitalApplogo-removebg-preview.png';
 
+// Defining the PatientLogin component
 function PatientLogin() {
+  // State variables
   const [code, setCode] = useState('');
   const [patientInfo, setPatientInfo] = useState(null);
   const [waitTime, setWaitTime] = useState(null);
 
+  // Event handler for code input change
   const handleCodeChange = (event) => {
     setCode(event.target.value);
   };
 
+  // Event handler for form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
+      // Fetching patient info from the server
       const response = await axios.get(`/api/patients/code/${code}`);
       setPatientInfo(response.data.patient);
       setWaitTime(response.data.waitTime);
@@ -22,9 +30,12 @@ function PatientLogin() {
     }
   };
 
+  // Rendering the component
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
+    <div className="patient-login-container">
+      <form onSubmit={handleSubmit} className="patient-login-form">
+        <img src={logo} alt="Hospital Logo" className="registration-logo" />
+        <h1 className="registration-title">Patient Login</h1>
         <input
           type="text"
           value={code}
@@ -60,5 +71,5 @@ function PatientLogin() {
   );
 }
 
+// Exporting the PatientLogin component
 export default PatientLogin;
-

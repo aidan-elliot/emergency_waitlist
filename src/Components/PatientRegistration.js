@@ -1,22 +1,12 @@
+// Importing necessary dependencies
 import React, { useState } from 'react';
 import axios from 'axios';
+import './PatientRegistration.css';
+import logo from './HospitalApplogo-removebg-preview.png';
 
-const injurySeverityScores = {
-  "Fracture": 5,
-  "Laceration": 3,
-  "Burn": 4,
-  "Sprain": 2,
-  "Concussion": 4, 
-  "Allergic Reaction": 3,
-  "Chest Pain": 5,
-  "Abdominal Pain": 5,
-  "Headache": 2,
-  "Shortness of Breath": 5,
-  "Poisoning": 5,
-
-};
-
+// Defining the PatientRegistration component
 function PatientRegistration() {
+  // State variables for patient data, registration success, and registration error
   const [patient, setPatient] = useState({
     name: '',
     age: '',
@@ -25,62 +15,108 @@ function PatientRegistration() {
     painScale: '',
   });
 
+  // List of injuries
   const injuries = [
     "Fracture",
     "Laceration",
     "Burn",
+    "Head Injury",
     "Sprain",
+    "Dislocation",
     "Concussion",
-    "Allergic Reaction",
-    "Chest Pain",
-    "Abdominal Pain",
-    "Headache",
-    "Shortness of Breath",
+    "Heart Attack",
+    "Stroke",
+    "Severe Bleeding",
     "Poisoning",
-    // Add more injuries as required
+    "Allergic Reaction",
+    "Asthma Attack",
+    "Seizure",
+    "Hypothermia",
+    "Heat Stroke",
+    "Dehydration",
+    "Diabetic Emergency",
+    "Pneumonia",
+    "Appendicitis",
+    "Hypertensive Crisis",
+    "Anaphylaxis",
+    "Sepsis",
+    "Kidney Stones",
+    "Gallstones",
+    "Chest Pain (Unspecified)",
+    "Abdominal Pain (Unspecified)",
+    "Traumatic Injury",
+    "Electrocution",
+    "Drowning/Near Drowning",
+    "Animal Bite",
+    "Foreign Body Obstruction",
+    "Pregnancy Complications",
+    "Major Head Trauma",
+    "Spinal Injury",
+    "Respiratory Distress",
+    "Psychiatric Emergency"
   ];
 
+  const [registrationSuccess, setRegistrationSuccess] = useState(null);
+  const [registrationError, setRegistrationError] = useState(null);
+
+  // Function to handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setRegistrationSuccess(null);
+    setRegistrationError(null);
+
     try {
+      // Parsing patient data and making a POST request to the server
       const patientData = {
         ...patient,
-        age: parseInt(patient.age),
-        painScale: parseInt(patient.painScale),
+        age: parseInt(patient.age, 10),
+        painScale: parseInt(patient.painScale, 10),
       };
 
       const response = await axios.post('/api/patients', patientData);
-      console.log(response.data);
-      alert(`Patient registered successfully. Your code: ${response.data.code}`);
-
+      setRegistrationSuccess(`Patient registered successfully. Your login is code: ${response.data.code}`);
       setPatient({ name: '', age: '', address: '', injury: '', painScale: '' });
     } catch (error) {
       console.error('Registration failed:', error);
-      alert('Registration failed. Please check your data and try again.');
+      setRegistrationError('Registration failed. Please check your data and try again.');
     }
   };
 
+  // Function to handle input changes
   const handleChange = (event) => {
     setPatient({ ...patient, [event.target.name]: event.target.value });
   };
 
+  // Rendering the PatientRegistration component
   return (
-    <form onSubmit={handleSubmit}>
-      <input name="name" onChange={handleChange} placeholder="Name" required />
-      <input name="age" onChange={handleChange} placeholder="Age" required />
-      <input name="address" onChange={handleChange} placeholder="Address" required />
-      
-      <select name="injury" onChange={handleChange} value={patient.injury} required>
-        <option value="">Select Injury</option>
-        {injuries.map(injury => (
-          <option key={injury} value={injury}>{injury}</option>
-        ))}
-      </select>
+    <div className="patient-registration-container">
+      <div className="registration-header">
+        <img src={logo} alt="Hospital Logo" className="registration-logo" />
+        <h1 className="registration-title">Web ER</h1>
+        <form onSubmit={handleSubmit}>
+          {/* Input fields for patient information */}
+          <input name="name" onChange={handleChange} placeholder="Name" required />
+          <input name="age" onChange={handleChange} placeholder="Age" required />
+          <input name="address" onChange={handleChange} placeholder="Address" required />
 
-      <input name="painScale" onChange={handleChange} placeholder="Pain Scale (1-10)" required />
-      <button type="submit">Register</button>
-    </form>
+          {/* Dropdown for selecting injury */}
+          <select name="injury" onChange={handleChange} value={patient.injury} required>
+            <option value="">Select Injury</option>
+            {injuries.map(injury => (
+              <option key={injury} value={injury}>{injury}</option>
+            ))}
+          </select>
+
+          <input name="painScale" onChange={handleChange} placeholder="Pain Scale (1-10)" required />
+          <button type="submit">Register</button>
+        </form>
+        {/* Displaying registration success and error messages */}
+        {registrationSuccess && <div className="registration-success">{registrationSuccess}</div>}
+        {registrationError && <div className="registration-error">{registrationError}</div>}
+      </div>
+    </div>
   );
 }
 
+// Exporting the PatientRegistration component
 export default PatientRegistration;
